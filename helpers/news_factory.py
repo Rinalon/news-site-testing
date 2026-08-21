@@ -56,7 +56,7 @@ def generate_news(
         tags_count: int | None = 5,
         img_width: int = 800,
         img_height: int = 600,
-        exclude: tuple | None = None
+        exclude: tuple[str] | None = None
 ) -> dict:
 
     news = {
