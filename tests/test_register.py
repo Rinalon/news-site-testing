@@ -1,26 +1,35 @@
 import pytest
-import re
-from playwright.sync_api import Page, expect, sync_playwright, Playwright
+from playwright.sync_api import Page
 from helpers import generate_user
+from pages import RegisterPage, MainPage, LoginPage
+
 
 def test_registration(page: Page, faker):
     page.goto("https://archiscope.ru/")
+    main_page = MainPage(page)
 
     user = generate_user(faker)
 
-    page.get_by_role("link", name="Регистрация").click()
+    main_page.register_button.click()
+    register_page = RegisterPage(main_page.page)
 
     # Заполнение формы Регистрации
-    page.locator("input[name=\"first_name\"]").fill(user["first_name"])
-    page.locator("input[name=\"last_name\"]").fill(user["last_name"])
-    page.locator("input[name=\"email\"]").fill(user["email"])
-    page.locator("input[name=\"phone\"]").fill(user["phone"])
-    page.locator("input[name=\"password\"]").fill(user["password"])
+    register_page.first_name_input.fill(user["first_name"])
+    register_page.last_name_input.fill(user["last_name"])
+    register_page.email_input.fill(user["email"])
+    register_page.phone_input.fill(user["phone"])
+    register_page.password_input.fill(user["password"])
 
-    page.get_by_role("button", name="Зарегистрироваться").click()
+    register_page.reg_button.click()
+
+    login_page = LoginPage(register_page.page)
 
     # Заполнение формы Логина
-    page.get_by_role("textbox", name="user@example.com").fill(user["email"])
-    page.get_by_role("textbox", name="••••••").fill(user["password"])
+    login_page.email_input.fill(user["email"])
+    login_page.password_input.fill(user["password"])
 
-    page.get_by_role("button", name="Войти").click()
+    login_page.login_button.click()
+
+"""
+
+"""

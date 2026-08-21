@@ -1,6 +1,7 @@
 import pytest
 from faker import Faker
 from playwright.sync_api import Page, expect
+from pages import MainPage, LoginPage
 
 @pytest.fixture(scope="session")
 def fake():
@@ -14,15 +15,17 @@ USERS = [
 @pytest.fixture(scope="function")
 def login(page: Page):
     def __login(email, password):
-
         page.goto("https://archiscope.ru/")
+        main_page = MainPage(page)
+        main_page.login_button.click()
 
-        page.get_by_role("link", name="Войти").click()
-        page.locator("input[type=\"email\"]").fill(email)
-        page.locator("input[type=\"password\"]").fill(password)
-        page.get_by_role("button", name="Войти").click()
+        login_page = LoginPage(main_page.page)
 
-        expect(page).to_have_url("https://archiscope.ru/", timeout=10000)
-        return page
+        login_page.email_input.fill(email)
+        login_page.password_input.fill(password)
+        login_page.login_button.click()
+
+        expect(login_page.page).to_have_url("https://archiscope.ru/", timeout=10000)
+        return MainPage(login_page.page)
 
     return __login
