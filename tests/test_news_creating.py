@@ -2,11 +2,16 @@ import pytest
 import re
 from helpers import generate_news
 from playwright.sync_api import expect
+from tests.conftest import USERS
 
 @pytest.fixture(scope="function")
 def news_create(login):
-    login.locator("a[href='/news/create']").click()
-    return login
+    page = login(**USERS[0])
+    page.locator("a[href='/news/create']").click()
+
+    expect(page).to_have_url("https://archiscope.ru/news/create", timeout=10000)
+
+    return page
 
 @pytest.fixture
 def news_factory(fake):
