@@ -1,9 +1,20 @@
+import allure
 import pytest
 from playwright.sync_api import Page
 from helpers import generate_user
 from pages import RegisterPage, MainPage, LoginPage
 
-
+@allure.epic("Registration")
+@allure.feature("Регистрации")
+@allure.story("Полный тест регистрации: от заполнения формы до логина под новым аккаунтом")
+@allure.severity(allure.severity_level.BLOCKER)
+@allure.description("""
+1 Перейти на главную страницу сайта
+2 Сгенерировать данные пользователя
+3 Заполнить форму регистрации
+4 Заполнить форму логина
+5 Проверить успешных вход
+""")
 def test_registration(page: Page, faker):
     main_page = MainPage(page).goto("https://archiscope.ru/")
 

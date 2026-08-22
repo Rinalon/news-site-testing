@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import expect
 from pages.base import BasePage
 
@@ -18,31 +19,38 @@ class MainPage(BasePage):
         self.active_page = page.locator(".join .btn-primary")
         self.page_buttons = page.locator(".join .btn:not(.btn-disabled):not(:has-text('«')):not(:has-text('»'))")
 
+    @allure.step("Получение страницы по её номеру")
     def get_page(self, number: int):
         return self.page.locator(f".join .btn:has-text(\"{number}\")")
 
+    @allure.step("Получение номера активной страницы")
     def get_active_page_number(self) -> str:
         return self.active_page.text_content()
 
+    @allure.step("Поиск новости по заголовку")
     def get_by_title(self, title):
         return self.page.get_by_text(title)
 
+    @allure.step("Переход к странице логина")
     def goto_login(self):
         self.login_button.click()
         expect(self.page).to_have_url("https://archiscope.ru/login", timeout=10000)
         return self.page
 
+    @allure.step("Переход к странице регистрации")
     def goto_register(self):
         self.register_button.click()
         expect(self.page).to_have_url("https://archiscope.ru/register", timeout=10000)
         return self.page
 
+    @allure.step("Переход к странице профиля")
     def goto_profile(self):
         self.avatar.click()
         self.profile_button.click()
         expect(self.page).to_have_url("https://archiscope.ru/profile", timeout=10000)
         return self.page
 
+    @allure.step("Переход к странице создания новости")
     def goto_create_news(self):
         self.create_news_btn.click()
         expect(self.page).to_have_url("https://archiscope.ru/news/create", timeout=10000)

@@ -1,13 +1,28 @@
+import allure
 import pytest
 from helpers import generate_user
 from tests.conftest import USERS
 from pages import UserProfilePage
+
 
 @pytest.fixture(scope="function")
 def user_profile(login):
     page = login(**USERS[1])
     return UserProfilePage(page.goto_profile())
 
+@allure.epic("User Profile")
+@allure.feature("Изменение данных пользователя")
+@allure.story("Позитивный тест")
+@allure.severity(allure.severity_level.NORMAL)
+@allure.description("""
+1 Логин под тестовым пользователем
+2 Переход на профиль
+3 Генерируем новые данные пользователя
+4 Сохранениям их
+5 Проверяем наличие сообщение о успехе
+ 
+Игнорируем email и password, чтобы не менять тестового пользователя
+""")
 def test_change_user_data(faker, user_profile):
     new_data = generate_user(faker, exclude=("email", "password"))
 

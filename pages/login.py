@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import expect
 from pages.base import BasePage
 
@@ -9,18 +10,22 @@ class LoginPage(BasePage):
         self.password_input = page.locator("input[type=\"password\"]")
         self.login_button = page.get_by_role("button", name="Войти")
 
+    @allure.step("Заполнение поля ввода email")
     def fill_email(self, email):
         self.email_input.fill(email)
         return self
 
+    @allure.step("Заполнение поля ввода password")
     def fill_password(self, password):
         self.password_input.fill(password)
         return self
 
+    @allure.step("Заполнение поля ввода email")
     def click_login(self):
         self.login_button.click()
         return self
 
+    @allure.step("Заполнение формы и нажатие на кнопку 'Войти'")
     def login(self, email, password):
         self.fill_email(email).fill_password(password).click_login()
         expect(self.page).to_have_url("https://archiscope.ru/", timeout=10000)
