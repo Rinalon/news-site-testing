@@ -3,8 +3,7 @@ from playwright.sync_api import Page, expect
 from pages import MainPage
 
 def test_pagination(page: Page):
-    page.goto("https://archiscope.ru/")
-    main_page = MainPage(page)
+    main_page = MainPage(page).goto("https://archiscope.ru/")
     
     # Ждём загрузки карточек новостей
     first_news_title = main_page.news_titles.first

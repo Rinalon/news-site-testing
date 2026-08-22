@@ -8,11 +8,7 @@ from pages import MainPage, NewsCreatingPage, NewsPage
 @pytest.fixture(scope="function")
 def news_create(login):
     page = login(**USERS[0])
-    page.create_news_btn.click()
-
-    expect(page.page).to_have_url("https://archiscope.ru/news/create", timeout=10000)
-
-    return NewsCreatingPage(page.page)
+    return NewsCreatingPage(page.goto_create_news())
 
 @pytest.fixture
 def news_factory(fake):
@@ -37,16 +33,7 @@ def news_factory(fake):
 ])
 def test_invalid_news_create(news_create, news_factory, news_config) -> None:
     news = news_factory(**news_config)
-
-    news_create.title_input.fill(news.get("title") or "")
-    news_create.subtitle_input.fill(news.get("subtitle") or "")
-    news_create.text_input.fill(news.get("text") or "")
-    news_create.tags_input.fill(news.get("tags") or "")
-
-    if "image" in news and news["image"]:
-        news_create.img_load.set_input_files(news["image"])
-
-    news_create.submit_button.click()
+    news_create.fill_form(**news)
 
     assert news_create.page.url == "https://archiscope.ru/news/create"
 
@@ -75,18 +62,9 @@ def test_invalid_news_create(news_create, news_factory, news_config) -> None:
 def test_valid_news_create(news_create, news_factory, news_config) -> None:
     news = news_factory(**news_config)
 
-    news_create.title_input.fill(news["title"])
-    news_create.subtitle_input.fill(news.get("subtitle") or "")
-    news_create.text_input.fill(news["text"])
-    news_create.tags_input.fill(news.get("tags") or "")
+    page = news_create.fill_form(**news)
 
-    if "image" in news and news["image"] is not None:
-        news_create.img_load.set_input_files(news["image"])
-
-    news_create.submit_button.click()
-
-    expect(news_create.page).to_have_url("https://archiscope.ru/", timeout=10000)
-
+    expect(page).to_have_url("https://archiscope.ru/", timeout=10000)
     page = MainPage(news_create.page)
 
     news_link = page.get_by_title(news["title"])

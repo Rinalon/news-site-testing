@@ -5,13 +5,11 @@ from pages import RegisterPage, MainPage, LoginPage
 
 
 def test_registration(page: Page, faker):
-    page.goto("https://archiscope.ru/")
-    main_page = MainPage(page)
+    main_page = MainPage(page).goto("https://archiscope.ru/")
 
     user = generate_user(faker)
 
-    main_page.register_button.click()
-    register_page = RegisterPage(main_page.page)
+    register_page = RegisterPage(main_page.goto_register())
 
     # Заполнение формы Регистрации
     register_page.first_name_input.fill(user["first_name"])

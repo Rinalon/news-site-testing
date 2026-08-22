@@ -15,17 +15,9 @@ USERS = [
 @pytest.fixture(scope="function")
 def login(page: Page):
     def __login(email, password):
-        page.goto("https://archiscope.ru/")
-        main_page = MainPage(page)
-        main_page.login_button.click()
+        main_page = MainPage(page).goto("https://archiscope.ru/")
+        login_page = LoginPage(main_page.goto_login())
 
-        login_page = LoginPage(main_page.page)
-
-        login_page.email_input.fill(email)
-        login_page.password_input.fill(password)
-        login_page.login_button.click()
-
-        expect(login_page.page).to_have_url("https://archiscope.ru/", timeout=10000)
-        return MainPage(login_page.page)
+        return MainPage(login_page.login(email, password))
 
     return __login
