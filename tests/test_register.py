@@ -11,23 +11,7 @@ def test_registration(page: Page, faker):
 
     register_page = RegisterPage(main_page.goto_register())
 
-    # Заполнение формы Регистрации
-    register_page.first_name_input.fill(user["first_name"])
-    register_page.last_name_input.fill(user["last_name"])
-    register_page.email_input.fill(user["email"])
-    register_page.phone_input.fill(user["phone"])
-    register_page.password_input.fill(user["password"])
+    page = register_page.fill_form(**user)
+    login_page = LoginPage(page)
 
-    register_page.reg_button.click()
-
-    login_page = LoginPage(register_page.page)
-
-    # Заполнение формы Логина
-    login_page.email_input.fill(user["email"])
-    login_page.password_input.fill(user["password"])
-
-    login_page.login_button.click()
-
-"""
-
-"""
+    login_page.login(user["email"], user["password"])
