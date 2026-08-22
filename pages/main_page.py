@@ -1,8 +1,9 @@
+from playwright.sync_api import expect
+from pages.base import BasePage
 
-class MainPage:
+class MainPage(BasePage):
     def __init__(self, page):
-        self.page = page
-
+        super().__init__(page)
         self.create_news_btn = page.locator("a[href='/news/create']")
         self.login_button = page.get_by_role("link", name="Войти")
         self.register_button = page.get_by_role("link", name="Регистрация")
@@ -25,3 +26,24 @@ class MainPage:
 
     def get_by_title(self, title):
         return self.page.get_by_text(title)
+
+    def goto_login(self):
+        self.login_button.click()
+        expect(self.page).to_have_url("https://archiscope.ru/login", timeout=10000)
+        return self.page
+
+    def goto_register(self):
+        self.register_button.click()
+        expect(self.page).to_have_url("https://archiscope.ru/register", timeout=10000)
+        return self.page
+
+    def goto_profile(self):
+        self.avatar.click()
+        self.profile_button.click()
+        expect(self.page).to_have_url("https://archiscope.ru/profile", timeout=10000)
+        return self.page
+
+    def goto_create_news(self):
+        self.create_news_btn.click()
+        expect(self.page).to_have_url("https://archiscope.ru/news/create", timeout=10000)
+        return self.page
