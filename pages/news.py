@@ -1,7 +1,6 @@
-class NewsPage:
-    def __init__(self, page):
-        self.page = page
+from pages.base import BasePage
 
+class NewsPage(BasePage):
     def get_heading(self, name, lvl):
         return self.page.get_by_role("heading", name=name, level=lvl)
 
