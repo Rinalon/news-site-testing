@@ -1,6 +1,6 @@
 import pytest
 from playwright.sync_api import Page
-from pages import MainPage, LoginPage
+from pages.playwright import MainPage, LoginPage
 
 @pytest.fixture(scope="function")
 def login(page: Page):

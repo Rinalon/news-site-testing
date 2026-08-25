@@ -1,19 +1,20 @@
 import allure
-import re
 from playwright.sync_api import expect
-from pages.base import BasePage
+from pages.playwright.base import BasePage
 
-class RegisterPage(BasePage):
+class UserProfilePage(BasePage):
     def __init__(self, page):
         super().__init__(page)
+
         self.first_name_input = page.locator("input[name=\"first_name\"]")
         self.last_name_input = page.locator("input[name=\"last_name\"]")
-        self.email_input = page.locator("input[type=\"email\"]")
         self.phone_input = page.locator("input[name=\"phone\"]")
+        self.email_input = page.locator("input[type=\"email\"]")
         self.password_input = page.locator("input[name=\"password\"]")
-        self.reg_button = page.get_by_role("button", name="Зарегистрироваться")
 
-        self.alert_message = page.get_by_text(re.compile(r"already registered$"))
+        self.save_button = page.get_by_role("button", name="Сохранить")
+
+        self.access_message = page.get_by_text("Профиль обновлён")
 
     @allure.step("Заполнение поля ввода имени")
     def fill_first_name(self, first_name):
@@ -40,21 +41,9 @@ class RegisterPage(BasePage):
         self.password_input.fill(password)
         return self
 
-    @allure.step("Заполнение формы регистрации и нажатие кнопки 'Зарегистрироваться'")
-    def fill_form(
-            self,
-            first_name: str,
-            last_name: str,
-            email: str,
-            phone: str,
-            password: str,
-    ):
-        self.fill_first_name(first_name)
-        self.fill_last_name(last_name)
-        self.fill_email(email)
-        self.fill_phone(phone)
-        self.fill_password(password)
-
-        self.reg_button.click()
-        expect(self.page).to_have_url("https://archiscope.ru/login", timeout=10000)
+    @allure.step("Нажатие кнопки 'Сохранить'")
+    def click_save_button(self):
+        self.save_button.click()
+        expect(self.access_message).to_be_visible()
         return self.page
+

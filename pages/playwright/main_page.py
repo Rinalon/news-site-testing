@@ -1,6 +1,6 @@
 import allure
 from playwright.sync_api import expect
-from pages.base import BasePage
+from pages.playwright.base import BasePage
 
 class MainPage(BasePage):
     def __init__(self, page):

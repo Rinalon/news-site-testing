@@ -2,7 +2,7 @@ import allure
 import pytest
 from playwright.sync_api import Page
 from helpers import generate_user
-from pages import RegisterPage, MainPage, LoginPage
+from pages.playwright import RegisterPage, MainPage, LoginPage
 
 @allure.epic("Registration")
 @allure.feature("Регистрации")

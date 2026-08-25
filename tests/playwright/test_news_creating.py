@@ -4,7 +4,7 @@ import re
 from helpers import generate_news
 from playwright.sync_api import expect
 from tests.conftest import USERS
-from pages import MainPage, NewsCreatingPage, NewsPage
+from pages.playwright import MainPage, NewsCreatingPage, NewsPage
 
 @pytest.fixture(scope="function")
 def news_create(login):

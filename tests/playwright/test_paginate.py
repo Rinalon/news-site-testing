@@ -1,7 +1,7 @@
 import allure
 import pytest
 from playwright.sync_api import Page, expect
-from pages import MainPage
+from pages.playwright import MainPage
 
 @allure.epic("News")
 @allure.feature("Пагинация")

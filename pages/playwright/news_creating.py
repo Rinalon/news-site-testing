@@ -1,5 +1,5 @@
 import allure
-from pages.base import BasePage
+from pages.playwright.base import BasePage
 
 class NewsCreatingPage(BasePage):
     def __init__(self, page):

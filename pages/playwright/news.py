@@ -1,5 +1,5 @@
 import allure
-from pages.base import BasePage
+from pages.playwright.base import BasePage
 
 class NewsPage(BasePage):
     @allure.step("Получение заголовка по тексту и уровню")

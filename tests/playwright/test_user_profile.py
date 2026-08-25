@@ -2,8 +2,7 @@ import allure
 import pytest
 from helpers import generate_user
 from tests.conftest import USERS
-from pages import UserProfilePage
-
+from pages.playwright import UserProfilePage
 
 @pytest.fixture(scope="function")
 def user_profile(login):
