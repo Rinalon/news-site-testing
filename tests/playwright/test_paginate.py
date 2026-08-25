@@ -1,6 +1,6 @@
 import allure
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
 from pages.playwright import MainPage
 
 @allure.epic("News")
@@ -14,7 +14,7 @@ from pages.playwright import MainPage
 5 Проверяем работу кнопки '»' и '«'
 6 Проверяем их отключение на последней и первой странице соотвественно 
 """)
-def test_pagination(page: Page):
+def test_pagination(page):
     with allure.step("Открыть главную страницу"):
         main_page = MainPage(page).goto("https://archiscope.ru/")
 

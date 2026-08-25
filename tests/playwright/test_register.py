@@ -1,6 +1,5 @@
 import allure
 import pytest
-from playwright.sync_api import Page
 from helpers import generate_user
 from pages.playwright import RegisterPage, MainPage, LoginPage
 
@@ -15,7 +14,7 @@ from pages.playwright import RegisterPage, MainPage, LoginPage
 4 Заполнить форму логина
 5 Проверить успешных вход
 """)
-def test_registration(page: Page, faker):
+def test_registration(page, faker):
     main_page = MainPage(page).goto("https://archiscope.ru/")
 
     user = generate_user(faker)
