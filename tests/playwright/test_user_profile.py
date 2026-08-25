@@ -5,7 +5,12 @@ from tests.conftest import USERS
 from pages.playwright import UserProfilePage
 
 @pytest.fixture(scope="function")
-def user_profile(login):
+def user_profile(login) -> UserProfilePage:
+    """
+        Фикстура для перехода на страницу пользователя
+        Returns:
+            UserProfilePage: страница пользователя
+    """
     page = login(**USERS[1])
     return UserProfilePage(page.goto_profile())
 

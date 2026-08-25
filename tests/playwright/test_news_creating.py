@@ -8,12 +8,22 @@ from pages.playwright import MainPage, NewsCreatingPage, NewsPage
 
 @pytest.fixture(scope="function")
 def news_create(login):
+    """
+        Фикстура для перехода к созданию новости
+        Returns:
+            NewsCreatingPage: страница создания новости
+    """
     page = login(**USERS[0])
     return NewsCreatingPage(page.goto_create_news())
 
 @pytest.fixture
-def news_factory(fake):
-    def _create(**kwargs):
+def news_factory(fake) -> dict:
+    """
+        Фикстура для создания новостей
+        Returns:
+            callable: Функция вида (**kwargs) -> dict.
+    """
+    def _create(**kwargs) -> dict:
         return generate_news(fake, **kwargs)
     return _create
 
