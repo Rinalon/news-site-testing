@@ -1,14 +1,19 @@
-from faker import Faker
 import os
-import requests
-from PIL import Image, ImageDraw
 import random
+import requests
+from pathlib import Path
+from faker import Faker
+from PIL import Image, ImageDraw
 
 def generate_image(
-        width: int = 800,
-        height: int = 600,
-        folder: str = "..\\temp",
+        width: int | None = 800,
+        height: int | None = 600,
+        folder: str | None = None,
 ) -> str:
+    if folder is None:
+        this_folder = Path(__file__)
+        folder = os.path.join(this_folder.parent.parent, 'temp')
+
 
     color = (
         random.randint(0, 255),
@@ -27,11 +32,14 @@ def generate_image(
 
 def download_image(
         faker: Faker,
-        width: int = 800,
-        height: int = 600,
-        folder: str = "..\\temp",
+        width: int | None = 800,
+        height: int | None = 600,
+        folder: str | None = None,
     ) -> str:
-    os.makedirs(folder, exist_ok=True)
+
+    if folder is None:
+        this_folder = Path(__file__)
+        folder = os.path.join(this_folder.parent.parent, 'temp')
 
     url = faker.image_url(width=width, height=height)
 
