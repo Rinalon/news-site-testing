@@ -10,6 +10,17 @@ def generate_image(
         height: int | None = 600,
         folder: str | None = None,
 ) -> str:
+    """
+        Генерация изображения.
+
+        Args:
+            width (int): Ширина изображения. По умолчанию 800.
+            height (int): Высота изображения. По умолчанию 600.
+            folder (str): Папка для сохранения. Если не указать папку, в функции будет создана ссылка на папку temp в корне проекта.
+
+        Returns:
+            str: Путь, в который было сохранено изображение.
+    """
     if folder is None:
         this_folder = Path(__file__)
         folder = os.path.join(this_folder.parent.parent, 'temp')
@@ -36,7 +47,21 @@ def download_image(
         height: int | None = 600,
         folder: str | None = None,
     ) -> str:
+    """
+        Скачивание изображения из Faker
 
+        Args:
+            faker (Faker): Экземпляр библиотеки Faker для генерации данных. (Обязательный).
+            width (int): Ширина изображения в пикселях. По умолчанию 800
+            height (int): Высота изображения. По умолчанию 600
+            folder (str): Папка для сохранения. Если не указать папку, в функции будет создана ссылка на папку temp в корне проекта.
+
+        Returns:
+            str: Путь, в который было сохранено изображение.
+
+        Raises:
+            Exception: возникает если Faker не нашёл изображение по тем или иным сетевым причинам.
+    """
     if folder is None:
         this_folder = Path(__file__)
         folder = os.path.join(this_folder.parent.parent, 'temp')
@@ -66,7 +91,22 @@ def generate_news(
         img_height: int = 600,
         exclude: tuple[str] | None = None
 ) -> dict:
+    """
+        Генерация новости.
 
+        Args:
+            faker (Faker): Экземпляр библиотеки Faker для генерации данных. (Обязательный).
+            words_title (int): Количество слов в заголовке. По умолчанию 5.
+            words_subtitle (int): Количество слов в подзаголовке. По умолчанию 5.
+            sentences_count (int): Количество предложений в тексте новости. По умолчанию 3.
+            tags_count (int): Количество тегов, которые необходимо сгенерировать. По умолчанию 5.
+            img_widt (int): Ширина изображения в пикселях. По умолчанию 800.
+            img_height (int): Высота изображения в пикселях. По умолчанию 600.
+            exclude (tuple[str]): список параметров, которые необходимо исключить из возвращаемого словаря.
+
+        Returns:
+            dict: Словарь с данными для новости.
+    """
     news = {
         "title": faker.sentence(nb_words=words_title),
         "subtitle": faker.sentence(nb_words=words_subtitle),

@@ -4,6 +4,16 @@ from datetime import datetime
 
 
 def generate_user(faker: Faker, exclude: tuple[str] | None = None) -> dict:
+    """
+        Генерация пользователя.
+
+        Args:
+            faker (Faker): Экземпляр библиотеки Faker для генерации данных. (Обязательный).
+            exclude (tuple[str]): список параметров, которые необходимо исключить из возвращаемого словаря.
+
+        Returns:
+            dict: Словарь с данными для пользователя.
+    """
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     data = {
