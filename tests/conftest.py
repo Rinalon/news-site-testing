@@ -32,5 +32,10 @@ def allure_setup(request):
     test_name = request.node.name.replace("test_", "").replace("_", " ").title()
     allure.dynamic.title(test_name)
 
-    if request.node.docstring:
-        allure.dynamic.description(request.node.docstring)
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """Хук для сохранения статуса выполнения теста."""
+    outcome = yield
+    rep = outcome.get_result()
+    setattr(item, f"rep_{rep.when}", rep)
