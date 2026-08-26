@@ -119,9 +119,12 @@ def login(page) -> MainPage:
 
                 with allure.step("Ввод учетных данных и вход"):
                     result_page = MainPage(login_page.login(email, password))
+
+                logger.info("Успешный логин")
                 return result_page
 
             except Exception as e:
+                logger.error(f"Ошибка логина: {e}")
                 allure.attach(
                     page.screenshot(),
                     name="login_error",
