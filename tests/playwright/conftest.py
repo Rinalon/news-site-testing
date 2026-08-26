@@ -1,7 +1,7 @@
 import allure
 import pytest
+from tests.conftest import BASE_URL
 from playwright.sync_api import Browser, BrowserContext
-
 from pages.playwright import MainPage, LoginPage
 
 @pytest.fixture(scope="session")
@@ -76,7 +76,7 @@ def login(page) -> MainPage:
     def __login(email: str, password: str) -> MainPage:
         with allure.step(f"Авторизация пользователя {email}"):
             try:
-                main_page = MainPage(page).goto("https://archiscope.ru/")
+                main_page = MainPage(page).goto(BASE_URL)
 
                 with allure.step("Переход на страницу логина"):
                     login_page = LoginPage(main_page.goto_login())

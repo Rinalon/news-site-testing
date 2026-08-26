@@ -2,6 +2,7 @@ import allure
 import pytest
 from helpers import generate_user
 from pages.playwright import RegisterPage, MainPage, LoginPage
+from tests.conftest import BASE_URL
 
 @allure.epic("Registration")
 @allure.feature("Регистрации")
@@ -15,7 +16,7 @@ from pages.playwright import RegisterPage, MainPage, LoginPage
 5 Проверить успешных вход
 """)
 def test_registration(page, faker):
-    main_page = MainPage(page).goto("https://archiscope.ru/")
+    main_page = MainPage(page).goto(BASE_URL)
 
     user = generate_user(faker)
 

@@ -3,7 +3,7 @@ import pytest
 import re
 from helpers import generate_news
 from playwright.sync_api import expect
-from tests.conftest import USERS
+from tests.conftest import USERS, BASE_URL
 from pages.playwright import MainPage, NewsCreatingPage, NewsPage
 
 @allure.epic("News")
@@ -54,7 +54,7 @@ class TestNewsCreation:
         news = news_factory(**news_config)
         self.news_create.fill_form(**news)
 
-        assert self.news_create.page.url == "https://archiscope.ru/news/create"
+        assert self.news_create.page.url == f"{BASE_URL}/news/create"
 
     @allure.story("Позитивный сценарии")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -97,7 +97,7 @@ class TestNewsCreation:
             page = self.news_create.fill_form(**news)
 
         with allure.step("Проверка создания новости"):
-            expect(page).to_have_url("https://archiscope.ru/", timeout=10000)
+            expect(page).to_have_url(BASE_URL, timeout=10000)
             main_page = MainPage(self.news_create.page)
 
             news_link = main_page.get_by_title(news["title"])

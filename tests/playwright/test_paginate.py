@@ -2,7 +2,7 @@ import allure
 import pytest
 from playwright.sync_api import expect
 from pages.playwright import MainPage
-
+from tests.conftest import BASE_URL
 @allure.epic("News")
 @allure.feature("Пагинация")
 @allure.story("Навигация по страницам")
@@ -16,7 +16,7 @@ from pages.playwright import MainPage
 """)
 def test_pagination(page):
     with allure.step("Открыть главную страницу"):
-        main_page = MainPage(page).goto("https://archiscope.ru/")
+        main_page = MainPage(page).goto(BASE_URL)
 
     with allure.step("Дождаться загрузки новостей на первой странице"):
         first_news_title = main_page.news_titles.first
