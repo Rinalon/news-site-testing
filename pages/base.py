@@ -1,4 +1,7 @@
+import logging
 from abc import ABC, abstractmethod
+
+logger = logging.getLogger("pages")
 
 class BasePage(ABC):
     """Абстрактный базовый класс — не зависит от фреймворка"""

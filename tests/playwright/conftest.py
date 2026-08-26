@@ -1,6 +1,6 @@
 import allure
 import pytest
-from tests.conftest import BASE_URL
+from tests.conftest import logger, BASE_URL, VIDEOS_DIR, TRACES_DIR, SCREENSHOTS_DIR
 from playwright.sync_api import Browser, BrowserContext
 from pages.playwright import MainPage, LoginPage
 
@@ -24,7 +24,7 @@ def browser():
         browser.close()
 
 @pytest.fixture(scope="function")
-def context(browser: Browser):
+def context(browser: Browser, request):
     """
         Фикстура, создающая новый браузерный контекст для каждого теста.
 
@@ -40,12 +40,32 @@ def context(browser: Browser):
         Note:
             Контекст автоматически закрывается после завершения теста.
     """
+    test_name = request.node.name
+
     context = browser.new_context(
         locale="ru-RU",
+        record_video_dir=str(VIDEOS_DIR)
     )
-    context.tracing.start(screenshots=True, snapshots=True)
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)
+    context._test_name = test_name
+    context._test_failed = False
 
     yield context
+
+    if context._test_failed:
+        trace_path = TRACES_DIR / f"{test_name}.zip"
+        context.tracing.stop(path=str(trace_path))
+        allure.attach.file(str(trace_path), "Playwright trace", attachment_type="application/zip")
+
+        logger.info(f"Результат теста {test_name} сохранён")
+    else:
+        context.tracing.stop()
+
+    video_path = VIDEOS_DIR / f"{test_name}.webm"
+    if context._test_failed and video_path.exists():
+        allure.attach.file(str(video_path), "Video", attachment_type="video/webm",)
+    elif video_path.exists():
+        video_path.unlink()
 
     context.close()
 
@@ -61,10 +81,26 @@ def page(context: BrowserContext, request):
             Страница автоматически закрывается после завершения теста.
     """
     page = context.new_page()
+    page.set_default_timeout(10000)
 
     yield page
 
+    if request.node.rep_call.failed:
+        context._test_failed = True
+
+        screenshot_path = SCREENSHOTS_DIR / f"{request.node.name}.png"
+        page.screenshot(path=str(screenshot_path), full_page=True)
+
+        allure.attach.file(str(screenshot_path), "Screenshot", attachment_type="image/png")
+        logger.info(f"Скриншот сохранён: {screenshot_path}")
+
     page.close()
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    rep = outcome.get_result()
+    setattr(item, f"rep_{rep.when}", rep)
 
 @pytest.fixture(scope="function")
 def login(page) -> MainPage:
