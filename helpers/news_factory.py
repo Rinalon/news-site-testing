@@ -22,8 +22,8 @@ def generate_image(
             str: Путь, в который было сохранено изображение.
     """
     if folder is None:
-        this_folder = Path(__file__)
-        folder = os.path.join(this_folder.parent.parent, 'temp')
+        folder = Path(__file__).parent.parent / "temp"
+        folder.mkdir(parents=True, exist_ok=True)
 
 
     color = (
@@ -63,8 +63,8 @@ def download_image(
             Exception: возникает если Faker не нашёл изображение по тем или иным сетевым причинам.
     """
     if folder is None:
-        this_folder = Path(__file__)
-        folder = os.path.join(this_folder.parent.parent, 'temp')
+        folder = Path(__file__).parent.parent / "temp"
+        folder.mkdir(parents=True, exist_ok=True)
 
     url = faker.image_url(width=width, height=height)
 
