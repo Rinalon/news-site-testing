@@ -64,3 +64,11 @@ class MainPage(BasePage):
         self.wait_for_url_contains("/news/create")
         from pages.selenium.create_news import CreateNewsPage
         return CreateNewsPage(self.driver)
+
+    def next_click(self):
+        self.click(self.next_button)
+        return self
+
+    def prev_click(self):
+        self.click(self.prev_button)
+        return self

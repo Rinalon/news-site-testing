@@ -33,16 +33,6 @@ class BasePage(AbstractPage):
         element = self.find(locator)
         element.send_keys(file_path)
 
-    def wait_for_url_contains(self, partial_url: str):
-        self.wait.until(EC.url_contains(partial_url))
-
-    def is_element_visible(self, locator) -> bool:
-        try:
-            self.wait.until(EC.visibility_of_element_located(locator))
-            return True
-        except TimeoutException:
-            return False
-
     def find_all(self, locator):
         return self.driver.find_elements(*locator)
 
@@ -67,3 +57,22 @@ class BasePage(AbstractPage):
     def is_element_disabled(self, locator) -> bool:
         element = self.find(locator)
         return element.get_attribute("disabled") is not None
+
+    def wait_for_url_contains(self, partial_url: str):
+        self.wait.until(EC.url_contains(partial_url))
+
+    def is_element_visible(self, locator) -> bool:
+        try:
+            self.wait.until(EC.visibility_of_element_located(locator))
+            return True
+        except TimeoutException:
+            return False
+
+    def is_text_present_in_element(self, locator, text):
+        try:
+            self.wait.until(
+            EC.text_to_be_present_in_element(locator, text)
+            )
+            return True
+        except TimeoutException:
+            return False
