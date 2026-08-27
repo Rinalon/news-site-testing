@@ -5,7 +5,8 @@ from helpers import generate_news
 from tests.conftest import USERS, BASE_URL
 from pages.selenium import MainPage, CreateNewsPage, NewsPage
 
-
+@allure.epic("News")
+@allure.feature("Создание новости")
 class TestNewsCreating:
     """Тесты создания новостей"""
 
