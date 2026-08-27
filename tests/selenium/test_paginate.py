@@ -36,13 +36,15 @@ def test_pagination(context):
         first_title_before = main_page.get_texts(main_page.news_titles)[0]
 
         page_2_locator = main_page.get_page_button(2)
-        main_page.click(page_2_locator)
+        WebDriverWait(main_page.driver, 10).until(
+            EC.element_to_be_clickable(page_2_locator)
+        ).click()
 
 
         main_page.is_text_present_in_element(main_page.active_page, "2")
 
         with allure.step("Ждём, пока текст 1й новости изменится"):
-            WebDriverWait(main_page.driver, 10).until(
+            WebDriverWait(main_page.driver, 15).until(
                 lambda d: main_page.get_texts(main_page.news_titles)[0] != first_title_before
             )
 

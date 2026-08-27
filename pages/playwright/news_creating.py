@@ -1,5 +1,6 @@
 import allure
 from pages.playwright.base import BasePage
+from playwright.sync_api import expect
 
 class NewsCreatingPage(BasePage):
     def __init__(self, page):
@@ -36,6 +37,22 @@ class NewsCreatingPage(BasePage):
     @allure.step("Загрузка картинки")
     def load_image(self, img):
         self.img_load.set_input_files(img)
+        return self
+
+    @allure.step("Отправка формы")
+    def submit(self):
+        self.submit_button.click()
+        return self
+
+    @allure.step("Проверка перехода")
+    def redirect(self):
+        try:
+            expect(self.page).to_have_url(self.BASE_URL)
+
+            from pages.playwright.main_page import MainPage
+            return MainPage(self.page)
+        except AssertionError:
+            return self
 
     @allure.step("Заполнение формы создания новости")
     def fill_form(
@@ -54,5 +71,4 @@ class NewsCreatingPage(BasePage):
         if image:
             self.load_image(image)
 
-        self.submit_button.click()
-        return self.page
+        return self

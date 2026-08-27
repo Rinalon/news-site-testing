@@ -3,6 +3,7 @@ import pytest
 from playwright.sync_api import expect
 from pages.playwright import MainPage
 from tests.conftest import BASE_URL
+
 @allure.epic("News")
 @allure.feature("Пагинация")
 @allure.story("Навигация по страницам")
@@ -12,7 +13,7 @@ from tests.conftest import BASE_URL
 2 Ждём загрузки новостей
 3 Проверяем цифры на нижней панели
 5 Проверяем работу кнопки '»' и '«'
-6 Проверяем их отключение на последней и первой странице соотвественно 
+6 Проверяем их отключение на последней и первой странице соответственно 
 """)
 def test_pagination(page):
     with allure.step("Открыть главную страницу"):
@@ -29,7 +30,7 @@ def test_pagination(page):
         )
 
     with allure.step("Перейти на вторую страницу"):
-        main_page.get_page(2).click()
+        main_page.get_page(2).click(timeout=10000)
         expect(main_page.active_page).to_have_text("2")
         titles_page2 = main_page.news_titles.all_text_contents()
         allure.attach(
@@ -42,7 +43,7 @@ def test_pagination(page):
         assert titles_page1 != titles_page2, "Заголовки новостей не изменились при переходе на страницу 2"
 
     with allure.step("Перейти на третью страницу через кнопку '»'"):
-        main_page.next_button.click()
+        main_page.next_button.click(timeout=10000)
         expect(main_page.active_page).to_have_text("3")
 
     with allure.step("Вернуться на вторую страницу через кнопку '«'"):

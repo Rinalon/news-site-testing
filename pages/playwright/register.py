@@ -40,6 +40,21 @@ class RegisterPage(BasePage):
         self.password_input.fill(password)
         return self
 
+    @allure.step("Отправить форму")
+    def reg_confirm(self):
+        self.reg_button.click()
+        return self
+
+    @allure.step("Проверка перехода")
+    def redirect(self):
+        try:
+            expect(self.page).to_have_url(f"{self.BASE_URL}login", timeout=10000)
+
+            from pages.playwright.login import LoginPage
+            return LoginPage(self.page)
+        except AssertionError:
+            return self
+
     @allure.step("Заполнение формы регистрации и нажатие кнопки 'Зарегистрироваться'")
     def fill_form(
             self,
@@ -55,6 +70,4 @@ class RegisterPage(BasePage):
         self.fill_phone(phone)
         self.fill_password(password)
 
-        self.reg_button.click()
-        expect(self.page).to_have_url("https://archiscope.ru/login", timeout=10000)
-        return self.page
+        return self

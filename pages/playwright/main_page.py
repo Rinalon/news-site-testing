@@ -20,7 +20,7 @@ class MainPage(BasePage):
         self.page_buttons = page.locator(".join .btn:not(.btn-disabled):not(:has-text('«')):not(:has-text('»'))")
 
     @allure.step("Получение страницы по её номеру")
-    def get_page(self, number: int):
+    def get_page(self, number: int) -> "Locator":
         return self.page.locator(f".join .btn:has-text(\"{number}\")")
 
     @allure.step("Получение номера активной страницы")
@@ -28,30 +28,38 @@ class MainPage(BasePage):
         return self.active_page.text_content()
 
     @allure.step("Поиск новости по заголовку")
-    def get_by_title(self, title):
+    def get_by_title(self, title: str) -> "Locator":
         return self.page.get_by_text(title)
 
     @allure.step("Переход к странице логина")
-    def goto_login(self):
+    def goto_login(self) -> "LoginPage":
         self.login_button.click()
-        expect(self.page).to_have_url("https://archiscope.ru/login", timeout=10000)
-        return self.page
+        expect(self.page).to_have_url(f"{self.BASE_URL}login", timeout=10000)
+
+        from pages.playwright.login import LoginPage
+        return LoginPage(self.page)
 
     @allure.step("Переход к странице регистрации")
-    def goto_register(self):
+    def goto_register(self) -> "RegisterPage":
         self.register_button.click()
-        expect(self.page).to_have_url("https://archiscope.ru/register", timeout=10000)
-        return self.page
+        expect(self.page).to_have_url(f"{self.BASE_URL}register", timeout=10000)
+
+        from pages.playwright.register import RegisterPage
+        return RegisterPage(self.page)
 
     @allure.step("Переход к странице профиля")
-    def goto_profile(self):
+    def goto_profile(self) -> "UserProfilePage":
         self.avatar.click()
         self.profile_button.click()
-        expect(self.page).to_have_url("https://archiscope.ru/profile", timeout=10000)
-        return self.page
+        expect(self.page).to_have_url(f"{self.BASE_URL}profile", timeout=10000)
+
+        from pages.playwright.user_profile import UserProfilePage
+        return UserProfilePage(self.page)
 
     @allure.step("Переход к странице создания новости")
-    def goto_create_news(self):
+    def goto_create_news(self) -> "NewsCreatingPage":
         self.create_news_btn.click()
-        expect(self.page).to_have_url("https://archiscope.ru/news/create", timeout=10000)
-        return self.page
+        expect(self.page).to_have_url(f"{self.BASE_URL}news/create", timeout=10000)
+
+        from pages.playwright.news_creating import NewsCreatingPage
+        return NewsCreatingPage(self.page)

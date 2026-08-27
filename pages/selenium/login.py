@@ -29,7 +29,7 @@ class LoginPage(BasePage):
 
     def redirect(self):
         try:
-            self.wait.until(EC.url_to_be("https://archiscope.ru/"))
+            self.wait.until(EC.url_to_be(self.BASE_URL))
             from pages.selenium import MainPage
             return MainPage(self.driver)
         except TimeoutException:

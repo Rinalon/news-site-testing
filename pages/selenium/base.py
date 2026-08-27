@@ -14,8 +14,6 @@ class BasePage(AbstractPage):
         self.driver.get(url)
         return self
 
-    def take_screenshot(self, name: str): pass
-
     def find(self, locator):
         return self.wait.until(EC.presence_of_element_located(locator))
 

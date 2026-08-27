@@ -12,7 +12,7 @@ def user_profile(login) -> UserProfilePage:
             UserProfilePage: страница пользователя
     """
     page = login(**USERS[1])
-    return UserProfilePage(page.goto_profile())
+    return page.goto_profile()
 
 @allure.epic("User Profile")
 @allure.feature("Изменение данных пользователя")
@@ -27,8 +27,8 @@ def user_profile(login) -> UserProfilePage:
  
 Игнорируем email и password, чтобы не менять тестового пользователя
 """)
-def test_change_user_data(faker, user_profile):
-    new_data = generate_user(faker, exclude=("email", "password"))
+def test_change_user_data(fake, user_profile):
+    new_data = generate_user(fake, exclude=("email", "password"))
 
     user_profile.fill_first_name(new_data["first_name"])
     user_profile.fill_last_name(new_data["last_name"])

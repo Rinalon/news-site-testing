@@ -109,13 +109,17 @@ def login(page) -> MainPage:
                 main_page = MainPage(page).goto(BASE_URL)
 
                 with allure.step("Переход на страницу логина"):
-                    login_page = LoginPage(main_page.goto_login())
+                    login_page = main_page.goto_login()
 
                 with allure.step("Ввод учетных данных и вход"):
-                    result_page = MainPage(login_page.login(email, password))
+                    result_page = login_page.login(email, password).redirect()
 
-                logger.info("Успешный логин")
-                return result_page
+                if isinstance(result_page, MainPage):
+                    logger.info("Успешный логин")
+                    return result_page
+                else:
+                    raise ValueError(
+                        f"Не вышло залогиниться под следующими параметрами: {'\n' + email + '\n' + password}')")
 
             except Exception as e:
                 logger.error(f"Ошибка логина: {e}")
