@@ -2,7 +2,7 @@ import allure
 from playwright.sync_api import expect
 from pages.playwright.base import BasePage
 
-class UserProfilePage(BasePage):
+class ProfilePage(BasePage):
     """
         Page Object для страницы профиля пользователя.
 

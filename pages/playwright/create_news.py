@@ -2,7 +2,7 @@ import allure
 from pages.playwright.base import BasePage
 from playwright.sync_api import expect
 
-class NewsCreatingPage(BasePage):
+class CreateNewsPage(BasePage):
     def __init__(self, page):
         super().__init__(page)
 

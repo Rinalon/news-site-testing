@@ -53,13 +53,13 @@ class MainPage(BasePage):
         self.profile_button.click()
         expect(self.page).to_have_url(f"{self.BASE_URL}profile", timeout=10000)
 
-        from pages.playwright.user_profile import UserProfilePage
-        return UserProfilePage(self.page)
+        from pages.playwright.profile import ProfilePage
+        return ProfilePage(self.page)
 
     @allure.step("Переход к странице создания новости")
     def goto_create_news(self) -> "NewsCreatingPage":
         self.create_news_btn.click()
         expect(self.page).to_have_url(f"{self.BASE_URL}news/create", timeout=10000)
 
-        from pages.playwright.news_creating import NewsCreatingPage
-        return NewsCreatingPage(self.page)
+        from pages.playwright.create_news import CreateNewsPage
+        return CreateNewsPage(self.page)

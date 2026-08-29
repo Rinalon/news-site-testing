@@ -2,10 +2,10 @@ import allure
 import pytest
 from helpers import generate_user
 from tests.conftest import USERS
-from pages.playwright import UserProfilePage
+from pages.playwright import ProfilePage
 
 @pytest.fixture(scope="function")
-def user_profile(login) -> UserProfilePage:
+def user_profile(login) -> ProfilePage:
     """
         Фикстура для перехода на страницу пользователя
         Returns:

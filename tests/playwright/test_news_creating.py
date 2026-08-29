@@ -4,7 +4,7 @@ import re
 from helpers import generate_news
 from playwright.sync_api import expect
 from tests.conftest import USERS
-from pages.playwright import MainPage, NewsCreatingPage, NewsPage
+from pages.playwright import MainPage, CreateNewsPage, NewsPage
 
 @allure.epic("News")
 @allure.feature("Создание новости")
@@ -48,7 +48,7 @@ class TestNewsCreation:
         self.news_create.fill_form(**news).submit()
 
         page = self.news_create.redirect()
-        assert isinstance(page, NewsCreatingPage), "Произошёл переход на главную страницу"
+        assert isinstance(page, CreateNewsPage), "Произошёл переход на главную страницу"
 
     @allure.story("Позитивный сценарии")
     @allure.severity(allure.severity_level.CRITICAL)
